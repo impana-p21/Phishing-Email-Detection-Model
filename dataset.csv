@@ -1,9 +1,11 @@
 text,label
-Congratulations! You won a free iPhone. Click here.,phishing
-Verify your bank account immediately.,phishing
-Your account has been suspended.,phishing
-Claim your lottery prize now.,phishing
+Congratulations! You won a free iPhone. Click http://freegift.com now.,phishing
+Verify your bank account immediately at http://bank-login.com.,phishing
+Claim your lottery prize at http://winner-now.com.,phishing
+Your PayPal account is locked. Visit http://paypal-secure-login.com.,phishing
+Update your password here: http://secure-update.com.,phishing
 Meeting scheduled tomorrow at 10 AM.,safe
 Please find the attached report.,safe
 Happy Birthday! Have a wonderful day.,safe
-Let's meet for lunch tomorrow.,safe
+Lunch at 1 PM tomorrow?,safe
+Project presentation has been moved to Friday.,safe
