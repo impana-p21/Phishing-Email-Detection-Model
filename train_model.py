@@ -1,18 +1,55 @@
 import pandas as pd
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.linear_model import LogisticRegression
-from sklearn.pipeline import Pipeline
 import joblib
+import re
 
-data=pd.read_csv("dataset.csv")
+from sklearn.pipeline import Pipeline
+from sklearn.linear_model import LogisticRegression
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, confusion_matrix
 
-model=Pipeline([
-("tfidf",TfidfVectorizer()),
-("clf",LogisticRegression())
+data = pd.read_csv("dataset.csv")
+
+def preprocess(text):
+
+    urls = re.findall(r"http[s]?://\\S+", text)
+
+    url_count = len(urls)
+
+    cleaned = re.sub(r"http[s]?://\\S+", " URL ", text)
+
+    return cleaned + (" URL" * url_count)
+
+data["processed"] = data["text"].apply(preprocess)
+
+X = data["processed"]
+
+y = data["label"]
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y,
+    test_size=0.2,
+    random_state=42
+)
+
+model = Pipeline([
+    ("tfidf", TfidfVectorizer()),
+    ("classifier", LogisticRegression())
 ])
 
-model.fit(data["text"],data["label"])
+model.fit(X_train, y_train)
 
-joblib.dump(model,"model.pkl")
+predictions = model.predict(X_test)
 
-print("Model Trained Successfully")
+accuracy = accuracy_score(y_test, predictions)
+
+cm = confusion_matrix(y_test, predictions)
+
+print("Accuracy:", accuracy)
+
+print("Confusion Matrix")
+
+print(cm)
+
+joblib.dump(model, "model.pkl")
